@@ -1,0 +1,40 @@
+{
+  "name": "react-responsive-app",
+  "version": "1.0.0",
+  "description": "A react component for responsive applications",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --watch --inline",
+    "test": "karma start",
+    "test:ci": "watch 'npm run test' src/",
+    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react --plugins babel-plugin-add-module-exports"
+  },
+  "keywords": [
+    "react",
+    "responsive",
+    "component",
+    "app"
+  ],
+  "author": "Felix Astner <me@felixastner.de>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "css-loader": "^0.23.1",
+    "jsx-loader": "^0.13.2",
+    "node-sass": "^3.8.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-hot-loader": "^1.3.0",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

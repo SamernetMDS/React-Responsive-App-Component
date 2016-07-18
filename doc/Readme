@@ -1,0 +1,118 @@
+#Setting up from scratch
+
+
+
+
+we need webpack and it's dev server:
+
+npm install --save-dev webpack
+npm install --save-dev webpack-dev-server
+
+or both combined:
+npm install --save-dev webpack webpack-dev-server
+
+Since we develop a react component, here's the react dependency:
+npm install --save-dev react
+
+
+##transforming jsx on the fly:
+npm install --save-dev jsx-loader
+
+you also have to modify the webpack configuration
+```
+module.exports = function() {
+    // ...
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                loader: 'jsx',
+                exclude: /node_modules/
+            }
+        ]
+    }
+    // ...  
+};
+```
+
+## hot loading react (without loosing data on your page)
+npm install --save-dev react-hot-loader
+
+#babel
+now we bring into play. First install it:
+
+then edit your loaders:
+Be careful to your loaders order: they are applied from right to left. So, we first transpile our ES6 code, then we turn our ES5 JSX to pure JS, and then we watch for the hot reload.
+
+```
+module.exports = function() {
+    // ...
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                loaders: ['react-hot', 'jsx', 'babel'], // <-- changed line
+                exclude: /node_modules/
+            }
+        ]
+    }
+    // ...  
+};
+```
+
+Off course, some of our components will have a default style (but it's not recommended to put styles into a component library like this one).
+As always, first install the loaders:
+
+npm install --save-dev sass-loader css-loader style-loader
+
+Then add a new loader:
+
+```
+module.exports = {
+    // ...
+    module: {
+        loaders: [
+            // ...
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
+            }
+        ]
+    }
+}
+```
+
+Now it's possible to include your style with a default require/or import: 
+```
+require('style.scss'); //es5
+import 'style.scss'; //es6
+
+Since inline css (in styles-tags) can't be cached by browsers (important for production mode), we use here another plugin, so our styles go into an extra file:
+
+npm install --save-dev extract-text-webpack-plugin
+
+```
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+module.exports = {
+    // ...
+    module: {
+        loaders: [
+            // ...
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract('css!sass')
+            }
+        ]
+    },
+    plugins: [
+        new ExtractTextPlugin('public/style.css', {
+            allChunks: true
+        })
+    ]
+}
+```
+
+influenced by those great articles:
+http://www.jonathan-petitcolas.com/2015/05/15/howto-setup-webpack-on-es6-react-application-with-sass.html
+http://krasimirtsonev.com/blog/article/distributing-react-components-babel-browserify-webpack-uglifyjs
